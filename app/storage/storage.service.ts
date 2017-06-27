@@ -114,8 +114,9 @@ export class StorageService {
             tempStores[siblingIndx].id -= count; 
         }
         
-        
-        return this.stores = tempStores;
+        this.stores = tempStores;
+        this.updateStorage();
+        return this.stores;
     }
 
 
