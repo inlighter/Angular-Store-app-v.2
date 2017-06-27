@@ -1,0 +1,63 @@
+<div class="container">
+  <!--<div [hidden]="activeMode" class="alert alert-success" role="alert">
+                <strong>Well done!</strong> You successfully added new store.
+        </div>-->
+  <div class="form-wrapper">
+    <div class="row justify-content-center">
+      <div class="col-10 col-lg-8 justify-content-center">
+
+        <form class="form-group">
+          <div class="form-group">
+            <label for="storeName">Name</label>
+            <input [disabled]="!activeMode" type="text" class="form-control" id="storeName" [(ngModel)]="currentStore.name" name="name">
+          </div>
+          <div class="form-group">
+            <label for="storeAddress">Address</label>
+            <input [disabled]="!activeMode" type="text" class="form-control" id="storeAddress" [(ngModel)]="currentStore.address" name="address">
+          </div>
+          <div class="form-group">
+            <label for="mode">Operating mode</label>
+            <input [disabled]="!activeMode" type="text" class="form-control" id="mode" [(ngModel)]="currentStore.mode" name="mode">
+          </div>
+          <button type="button" class="btn btn-primary" *ngIf="activeMode" (click)="save()">Save</button>
+          <button type="button" class="btn btn-primary" *ngIf="!activeMode" (click)="editStore()">Edit</button>
+          <button type="button" class="btn btn-primary delete-btn" *ngIf="!activeMode" (click)="deleteStore(currentStore)">Delete</button>
+        </form>
+      </div>
+
+    </div>
+
+    <div class="row justify-content-center" *ngIf="!activeMode">
+      <div class="col-10 col-lg-8 justify-content-center">
+        <hr>
+        <h3 class="text-center">Add new product to the store</h3>
+        <form class="form-group">
+          <div class="form-group">
+            <label for="productName">Name</label>
+            <input [disabled]="false" type="text" class="form-control" id="productName" [(ngModel)]="productName" name="productName">
+          </div>
+          <div class="form-group">
+            <label for="productDescription">Description</label>
+            <textarea [disabled]="false" type="text" class="form-control" id="productDescription" [(ngModel)]="productDescription" name="productDescription"></textarea>
+          </div>
+          <button type="button" class="btn btn-primary" (click)="addProduct()">Add</button>
+
+        </form>
+        <table class="table table-bordered table-responsive" *ngIf="currentStore.products.length">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let product of currentStore.products" (dblclick)="removeProduct(product)" (click)="editProduct(product)">
+              <td>{{ product.name }}</td>
+              <td>{{ product.description }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

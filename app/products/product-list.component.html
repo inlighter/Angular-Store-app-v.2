@@ -1,0 +1,26 @@
+<div class="container">
+        <div class="jumbotron">
+            <div class="row justify-content-md-center" >
+                <div class=" col col-lg-8">
+                
+                    <h1 class="article-title">{{ store.name }}</h1>
+                    <table class="table table-bordered table-responsive">
+                        <thead>
+                            <tr>
+                            
+                            <th>Name</th>
+                            <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody  >
+                            <tr *ngFor="let product of products">
+                                
+                                <td>{{ product.name }}</td>
+                                <td>{{ product.description }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>

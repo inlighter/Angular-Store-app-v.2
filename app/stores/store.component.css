@@ -1,0 +1,12 @@
+.card {
+        margin-top: 20px;       
+        
+    }
+.card-header {
+    cursor: n-resize;
+}
+
+.edit-btn {
+    position: absolute;
+    right: 20px;
+}
