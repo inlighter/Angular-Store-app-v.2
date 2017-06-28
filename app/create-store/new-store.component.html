@@ -6,20 +6,24 @@
     <div class="row justify-content-center">
       <div class="col-10 col-lg-8 justify-content-center">
 
-        <form class="form-group">
+        <form #storeForm="ngForm" class="form-group" autocomplete="off" novalidate>
           <div class="form-group">
             <label for="storeName">Name</label>
-            <input [disabled]="!activeMode" type="text" class="form-control" id="storeName" [(ngModel)]="currentStore.name" name="name">
+            <em *ngIf="storeForm.controls.storeName?.invalid && (storeForm.controls.storeName?.touched || moseoverSave)">Required</em>
+            <input [disabled]="!activeMode" type="text" class="form-control" id="storeName" [(ngModel)]="currentStore.name" name="storeName" required>
           </div>
           <div class="form-group">
             <label for="storeAddress">Address</label>
-            <input [disabled]="!activeMode" type="text" class="form-control" id="storeAddress" [(ngModel)]="currentStore.address" name="address">
+            <em *ngIf="storeForm.controls.storeAddress?.invalid && (storeForm.controls.storeAddress?.touched || moseoverSave)">Required</em>
+            <input [disabled]="!activeMode" type="text" class="form-control" id="storeAddress" [(ngModel)]="currentStore.address" name="storeAddress" required>
           </div>
           <div class="form-group">
             <label for="mode">Operating mode</label>
             <input [disabled]="!activeMode" type="text" class="form-control" id="mode" [(ngModel)]="currentStore.mode" name="mode">
           </div>
-          <button type="button" class="btn btn-primary" *ngIf="activeMode" (click)="save()">Save</button>
+          <span (mouseenter)="moseoverSave=true" (mouseleave)="moseoverSave=false">
+            <button type="button" [disabled]="storeForm.invalid" class="btn btn-primary" *ngIf="activeMode" (click)="save()">Save</button>
+          </span>
           <button type="button" class="btn btn-primary" *ngIf="!activeMode" (click)="editStore()">Edit</button>
           <button type="button" class="btn btn-primary delete-btn" *ngIf="!activeMode" (click)="deleteStore(currentStore)">Delete</button>
         </form>
@@ -31,19 +35,21 @@
       <div class="col-10 col-lg-8 justify-content-center">
         <hr>
         <h3 class="text-center">Add new product to the store</h3>
-        <form class="form-group">
+        <form class="form-group" #productForm="ngForm">
           <div class="form-group">
             <label for="productName">Name</label>
-            <input [disabled]="false" type="text" class="form-control" id="productName" [(ngModel)]="productName" name="productName">
+            <em *ngIf="productForm.controls.productName?.invalid && (productForm.controls.productName?.dirty || moseoverAdd)">Required</em>
+            <input required type="text" class="form-control" id="productName" [(ngModel)]="productName" name="productName">
           </div>
           <div class="form-group">
             <label for="productDescription">Description</label>
-            <textarea [disabled]="false" type="text" class="form-control" id="productDescription" [(ngModel)]="productDescription" name="productDescription"></textarea>
+            <textarea type="text" class="form-control" id="productDescription" [(ngModel)]="productDescription" name="productDescription"></textarea>
           </div>
-          <button type="button" class="btn btn-primary" (click)="addProduct()">Add</button>
-
+          <span (mouseenter)="moseoverAdd=true" (mouseleave)="moseoverAdd=false">
+            <button type="button" [disabled]="productForm.invalid" class="btn btn-primary" (click)="addProduct()">Add</button>
+          </span>
         </form>
-        <table class="table table-bordered table-responsive" *ngIf="currentStore.products.length">
+        <table class="table table-bordered" *ngIf="currentStore.products.length">
           <thead>
             <tr>
               <th>Name</th>

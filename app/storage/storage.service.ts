@@ -15,15 +15,8 @@ export class StorageService {
         sessionStorage.setItem('List of stores', JSON.stringify(this.stores));
     }
 
-    updateStorageOnDrop(stores: Store[]): void {        
-        this.stores = stores;
-        this.updateStorage();
-        
-    }
-
-    addStore(store: Store): void {
-        
-        this.stores.push(store);         
+    addStore(store: Store): void {        
+        this.stores.push(store);       
         this.updateStorage();
         
     }
@@ -33,24 +26,19 @@ export class StorageService {
     }
 
     removeStore(store: Store): void {
-
-        this.getStores();
         const storeIndex = this.stores.map(shop => shop.id).indexOf(store.id);
         this.stores = this.stores.filter(shop => shop.id !== store.id);
-        console.log(storeIndex, this.stores);
-        for (let i = storeIndex; i < this.stores.length; i++) {
-            
+        for (let i = storeIndex; i < this.stores.length; i++) {            
             this.stores[i].id -= 1;
-        }
-        
-        this.updateStorage();
-        
+        }        
+        this.updateStorage();       
         
     }
 
     clearStorage(): Store[] {
         this.stores.length = 0;
         sessionStorage.removeItem('list of stores');
+        this.updateStorage();
         return this.stores;
     }
 
@@ -59,15 +47,16 @@ export class StorageService {
     }
 
     getStoreById(id: number): Store {
-        this.getStores();
-        
         return this.stores.find(val => val.id === id);
     }
 
     getMaxStoreId(): number {
-        const temp = this.stores.slice();
-        temp.sort((a, b) => b.id - a.id);
-        return temp[0].id;
+        if (this.stores.length !== 0) {
+            const temp = this.stores.slice();
+            temp.sort((a, b) => b.id - a.id);
+            return temp[0].id;
+        }
+        return 0;
     }
 
     replaceStore(store: Store): void {
@@ -78,43 +67,27 @@ export class StorageService {
         this.updateStorage();
     }
 
-    rearrangeStores(elementIndx: number, siblingIndx: number): Store[] {
-        const tempStores = this.stores.slice();
+    rearrangeStores(indxBefore: number, indxAfter: number, stores: Store[]): Store[] {
         
-        if (siblingIndx === undefined) {
-            const storeToMove = tempStores.splice(elementIndx, 1);
-            tempStores.push(storeToMove[0]);            
+        if (indxAfter > indxBefore) {
             
-            let count = 0;
-            const arrLen = tempStores.length;
-            for (let i = elementIndx; i < arrLen - 1; i++) {
-                
-                tempStores[i].id -= 1;
+            let count = 0;            
+            for (let i = indxBefore; i < indxAfter; i++) {                
+                stores[i].id -= 1;
                 count++;
             }
-            tempStores[tempStores.length-1].id += count; 
-        } else if (siblingIndx > elementIndx) {
+            stores[indxAfter].id += count; 
+        } else if (indxAfter < indxBefore) { 
+                        
             let count = 0;
-            const storeToMove = tempStores.splice(elementIndx, 1);
-            tempStores.splice(siblingIndx-1, 0, storeToMove[0]); 
-            for (let i = elementIndx; i < siblingIndx - 1; i++) {
-                
-                tempStores[i].id -= 1;
+            for (let i = indxAfter + 1; i <= indxBefore; i++) {
+                stores[i].id += 1;
                 count++;
             }
-            tempStores[siblingIndx-1].id += count; 
-        } else if (siblingIndx < elementIndx) {
-            const storeToMove = tempStores.splice(elementIndx, 1);
-            tempStores.splice(siblingIndx, 0, storeToMove[0]);
-            let count = 0;
-            for (let i = siblingIndx + 1; i <= elementIndx; i++) {
-                tempStores[i].id += 1;
-                count++;
-            }
-            tempStores[siblingIndx].id -= count; 
+            stores[indxAfter].id -= count; 
         }
-        
-        this.stores = tempStores;
+
+        this.stores = stores;
         this.updateStorage();
         return this.stores;
     }

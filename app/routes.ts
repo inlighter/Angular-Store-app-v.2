@@ -9,9 +9,38 @@ import { Error404Component } from './errors/404.component';
 export const appRoutes: Routes = [
 
     { path: '', redirectTo: '/stores', pathMatch: 'full' },
-    { path: 'stores', component: StoreListComponent, resolve: {locations: LocationResolver} },
-    { path: 'products/:id', component: ProductListComponent, canActivate: [StoreRouteActivator] },
-    { path: 'create', component: NewStoreComponent },
-    { path: 'create/:id', component: NewStoreComponent, canActivate: [StoreRouteActivator] },
-    { path: '404', component: Error404Component}
+    { path: 'stores', 
+        children: [
+            {
+                path: '', component: StoreListComponent, resolve: {locations: LocationResolver}
+            },
+            {
+                path: '**', redirectTo: '/404' 
+            }
+        ] },
+    { path: 'products',
+        children: [
+            
+            {
+                path: ':id', component: ProductListComponent, canActivate: [StoreRouteActivator]
+            },
+            {
+                path: '**', redirectTo: '/404' 
+            }
+        ] },
+    { path: 'create', 
+        children: [
+            {
+                path: '', component: NewStoreComponent
+            },
+            {
+                path: ':id', component: NewStoreComponent, canActivate: [StoreRouteActivator]
+            },
+            {
+                path: '**', redirectTo: '/404'
+            }
+        ]},
+    
+    { path: '404', component: Error404Component},
+    { path: '**', redirectTo: '/404' }
 ];

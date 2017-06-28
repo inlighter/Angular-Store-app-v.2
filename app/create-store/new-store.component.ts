@@ -17,12 +17,7 @@
                 name: '',
                 address: '',
                 mode: '',
-                products: [
-                    {
-                        name: '',
-                        description: ''
-                    }
-                ]
+                products: []
             }
     
 
@@ -75,10 +70,10 @@
             } 
         } else {
             const productIndex = this.currentStore.products.map(val => val.name).indexOf(this.productName);
-            this.currentStore.products[productIndex].description = this.productDescription;
-            this.storageService.replaceStore(this.currentStore);
+            this.currentStore.products[productIndex].description = this.productDescription;            
             
-        } 
+        }
+        this.storageService.replaceStore(this.currentStore); 
         this.productDescription = undefined;
         this.productName = undefined;
      }
@@ -97,7 +92,7 @@
      }
 
      editStore(): void {
-        this.activeMode = !this.activeMode;
+        this.activeMode = true;
      }
 
      deleteStore(store: Store): void {
@@ -107,13 +102,12 @@
                 name: '',
                 address: '',
                 mode: '',
-                products: [{
-                    name: '',
-                    description: ''
-                }]
+                products: []
 
             }
-        this.activeMode = !this.activeMode;
+        this.productDescription = undefined;
+        this.productName = undefined;
+        this.activeMode = true;
      
     
     }

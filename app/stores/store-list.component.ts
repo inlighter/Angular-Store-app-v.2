@@ -21,52 +21,60 @@ import { ILocation } from '../map/location.model';
     <div class="container">
         <div class="row justify-content-md-center">
             <div class="col col-md-10">
-                <ul class="list-unstyled list-group" [dragula]='"bag-one"' [dragulaModel]='stores'>
+                <ul class="list-unstyled list-group" [dragula]="'bag-one'" [dragulaModel]="stores">
                     <single-store [id]="store.id" *ngFor="let store of stores" [store]="store"></single-store>
                 </ul>
             </div>
+            <div class="col-12 text-center">
+                <button *ngIf="stores.length" type="button" class="btn btn-danger btn-remove-all" 
+                (click)="removeAllStores()">Remove All</button>
+            </div>
+            <h3 *ngIf="!stores.length">Sorry, there are no stores on the site yet.</h3>
         </div>
         
     </div>
     
     
     `,
-    styleUrls: ['./dragula.css']
+    styleUrls: ['./dragula.css', './store-list.component.css']
 })
 
 export class StoreListComponent implements OnInit {
      stores: Store[];
      locations: ILocation[];
+     draggedElementId: number;
+     elIndxBeforeDrop: number;
      
      
      constructor(private storageService: StorageService, private route: ActivatedRoute, private dragulaService: DragulaService) {
-        dragulaService.drop.subscribe((value) => {
-            this.onDrop(value.slice(1));
+        dragulaService.drag.subscribe((value) => {
+            this.draggedElementId = +value[1].attributes.id.nodeValue;
+            this.elIndxBeforeDrop = this.stores.map(shop => shop.id).indexOf(this.draggedElementId); 
+            
+        });
+        
+        dragulaService.dropModel.subscribe(() => {
+            this.onDropModel();
             
         });
      }
 
      ngOnInit() {
-         this.stores = this.storageService.getStores();
-         
+         this.stores = this.storageService.getStores();                
          this.locations = this.route.snapshot.data['locations'];
          
      }
 
-     onDrop(args) {    
-        const [el, target, source, sibling] = args;        
-        const elId = el.attributes.id.nodeValue;         
-
-        const siblingId = sibling !== null ? sibling.attributes.id.nodeValue : undefined;
-
-        this.stores = this.storageService.getStores();
-        const arrStoresId = this.stores.map(shop => shop.id);
-        const elIndex = arrStoresId.indexOf(+elId);       
-          
-        const siblingIndex = !!siblingId ? arrStoresId.indexOf(+siblingId) : undefined;
-
-        this.stores = this.storageService.rearrangeStores(elIndex, siblingIndex);
+     onDropModel(): void {  
+        const storesAfterDrop = this.stores.slice();
+        const elIndexAfterDrop = storesAfterDrop.map(shop => shop.id).indexOf(this.draggedElementId);    
+        this.stores = this.storageService.rearrangeStores(this.elIndxBeforeDrop, elIndexAfterDrop, storesAfterDrop);
         
+     }
+
+     removeAllStores(): void {
+        this.stores = this.storageService.clearStorage();
+        this.locations = [];
      }
 
      

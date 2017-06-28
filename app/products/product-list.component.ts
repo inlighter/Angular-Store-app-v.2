@@ -25,7 +25,7 @@ export class ProductListComponent implements OnInit {
     ngOnInit() {
          
         this.id = +this.route.snapshot.params['id'];
-        this.store = this.storageService.getStoreById(this.id);     
+        this.store = this.storageService.getStoreById(this.id);
         this.products = this.store.products;
     }
     

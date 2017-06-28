@@ -7,7 +7,7 @@ import { StorageService } from './storage/storage.service';
 
 import { StoreComponent } from './stores/store.component';
 import { StoreListComponent } from './stores/store-list.component';
-import { ProductComponent } from './products/product.component';
+
 import { ProductListComponent } from './products/product-list.component';
 import { NewStoreComponent } from './create-store/new-store.component';
 import { NavBarComponent } from './nav/navbar.component';
@@ -27,7 +27,6 @@ import { AppComponent } from './app.component';
     AppComponent, 
     StoreComponent, 
     StoreListComponent, 
-    ProductComponent,
     ProductListComponent,
     NewStoreComponent,
     NavBarComponent,

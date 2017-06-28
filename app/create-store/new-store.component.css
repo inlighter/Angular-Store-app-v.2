@@ -53,3 +53,9 @@ th, td {
   font-size: 18px;
   text-align: left;
 }
+
+em {
+  float: right;
+  color: #E05C65;
+  padding-left: 10px;
+}

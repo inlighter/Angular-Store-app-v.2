@@ -10,7 +10,7 @@ import { ILocation } from './location.model';
             [latitude]="location.lat" [longitude]="location.lng">
                 <agm-info-window>
                     <h6>{{ location.name }}</h6>
-                    <p>Time schedule: {{ location.timetable }}</p>
+                    <p *ngIf="!!location?.timetable">Time schedule: {{ location?.timetable }}</p>
                 </agm-info-window>
             </agm-marker>            
         </agm-map>

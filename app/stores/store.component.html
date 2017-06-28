@@ -5,7 +5,7 @@
     <div class="card-block">
         <h4 class="card-title">{{ store.name }}</h4>
         <address>Address: {{ store.address }}</address>
-        <p>Time schedule: {{ store.mode }}</p>
+        <p *ngIf="!!store?.mode">Time schedule: {{ store?.mode }}</p>
         <button [routerLink]="['/products', store.id]" class="btn btn-primary">See products</button>
         <button [routerLink]="['/create', store.id]" class="btn btn-primary edit-btn">Edit store</button>
     </div>
